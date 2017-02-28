@@ -38,7 +38,10 @@ class MyFaction extends PluginBase {
 			default:
 				$this->database = new Database\SQLiteDatabase($this->getDataFolder(), $this->config);
 		}
-	
+		
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		
+		$this->getCommand("faction")->setExecutor(new Commands\FactionCommand($this));
 		self::$instance = $this;
 	}
 	
@@ -46,11 +49,42 @@ class MyFaction extends PluginBase {
 		$this->database->close();
 	}
 	
+	### API ###
+	
+	/*
+	** Call this first, if you want to intercat with API
+	** In main class of your plugin:
+	** $api = $this->getServer()->getPluginManager()->getPlugin('MyFaction')
+	** $api::getInstance();
+	*/
+	
 	public static function getInstance() {
 		return self::$instance;
 	}
+
+	/*
+	** Gets player data
+	** Returns false, if player is not in a faction
+	** Otherwise, returns array with data:
+	** $data['nickname'] => string, player's name
+	** $data['factionName'] => string, name of faction
+	** $data['exp'] => int, how much expeirence did player brought to faction
+	** $data['factionLevel'] => int, faction rank (see at line 11)
+	*/
 	
-	public function getDatabase(){
+	public function getPlayerData(string $nickname){
+		$data = $this->database->getPlayerInfo($nickname);
+		
+		if($data == null) {
+			return false;
+		}
+		
+		return $data;
+	}
+
+	### INTERNAL ###
+	
+	private function getDatabase(){
 		return $this->database;
 	}
 	
