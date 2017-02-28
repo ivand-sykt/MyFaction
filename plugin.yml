@@ -8,8 +8,12 @@ description: Simple factions plugin
 
 commands:
  faction:
-  descrition: "Faction admin commands"
-  permission: myfaction.faction
+  description: "Faction commands"
+  permission: "myfaction.faction"
+ factionadmin:
+  aliases: ["fadmin"]
+  description: "Faction admin commands"
+  permission: "myfaction.factionadmin"
   
 permissions:
  myfaction:
@@ -19,4 +23,7 @@ permissions:
   children:
    myfaction.faction:
     description: "Allows using faction command"
+    default: true
+   myfaction.factionadmin:
+    description: "Allows using faction admin commands"
     default: true

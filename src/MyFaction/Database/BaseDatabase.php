@@ -14,6 +14,16 @@ interface BaseDatabase {
 	
 	public function kickPlayer(string $nickname);
 	
+	/*
+	** Gets player data
+	** Returns false, if player is not in a faction
+	** Otherwise, returns array with data:
+	** $data['nickname'] => string, player's name
+	** $data['factionName'] => string, name of faction
+	** $data['exp'] => int, how much expeirence did player brought to faction
+	** $data['factionLevel'] => int, faction rank (see at line 11)
+	*/
+	
 	public function getPlayerInfo(string $nickname);
 	
 	public function setPlayerLevel(string $nickname, int $level);

@@ -129,7 +129,7 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 	
 	public function setHome(int $x, int $y, int $z, string $faction){
 		// если нет дома
-		if(self::$database->getHome($faction) == null){
+		if($this->getHome($faction) == null){
 			self::$database ->query(
 			"INSERT INTO `homes` (x, y, z, factionName) VALUES
 			($x, $y, $z, '$faction');");
