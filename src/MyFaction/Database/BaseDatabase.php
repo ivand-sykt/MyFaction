@@ -4,23 +4,25 @@ namespace MyFaction\Database;
 
 interface BaseDatabase {
 	
-	public function registerFaction($faction, $owner);
+	public function registerFaction(string $faction, string $owner);
 	
-	public function deleteFaction($faction);
+	public function deleteFaction(string $faction);
 	
-	public function getFactionInfo($faction);
+	public function getFactionInfo(string $faction);
 	
-	public function registerPlayer($nickname, $faction);
+	public function registerPlayer(string $nickname, string $faction);
 	
-	public function kickPlayer($nickname, $faction);
+	public function kickPlayer(string $nickname);
 	
-	public function getPlayerInfo($nickname);
+	public function getPlayerInfo(string $nickname);
 	
-	public function setPlayerLevel($nickname, $faction);
+	public function setPlayerLevel(string $nickname, int $level);
 	
-	public function setHome($x, $y, $z, $faction);
+	public function setHome(int $x, int $y, int $z, string $faction);
 
-	public function deleteHome($faction);
+	public function deleteHome(string $faction);
+	
+	public function getHome(string $faction);
 	
 	public function close();
 

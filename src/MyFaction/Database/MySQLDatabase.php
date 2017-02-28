@@ -56,7 +56,7 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		$this->start();
 	}
 	
-	public function registerFaction($faction, $owner) {
+	public function registerFaction(string $faction, string $owner) {
 		self::$database->query(
 		"INSERT INTO `factions` (factionName, exp, level, leader) VALUES
 		('$faction', 0, 1, '$owner');");
@@ -68,7 +68,7 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		return;
 	}
 	
-	public function deleteFaction($faction){
+	public function deleteFaction(string $faction){
 		self::$database->query(
 		"DELETE FROM `factions`
 		WHERE `factionName` = '$faction';");
@@ -84,7 +84,7 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		return;
 	}
 	
-	public function getFactionInfo($faction){
+	public function getFactionInfo(string $faction){
 		$data = self::$database->query(
 		"SELECT * FROM `factions` 
 		WHERE `factionName` = '$faction'");
@@ -92,28 +92,72 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		return $data->fetch_assoc();
 	}
 	
-	public function registerPlayer($nickname, $faction){
+	public function registerPlayer(string $nickname, string $faction){
+		$level = MyFaction::NORMAL_LEVEL;
 		
+		self::$database->query(
+		"INSERT INTO `users` (nickname, factionName, exp, factionLevel) VALUES
+		('$nickname', '$faction', 0, $level);");
+	
+		return;
 	}
 	
-	public function kickPlayer($nickname, $faction){
+	public function kickPlayer(string $nickname){
+		self::$database->query(
+		"DELETE FROM `users` 
+		WHERE `nickname` = '$nickname';");
 		
+		return;
 	}
 	
-	public function getPlayerInfo($nickname){
+	public function getPlayerInfo(string $nickname){
+		$data = self::$database->query(
+		"SELECT * FROM `users` 
+		WHERE `nickname` = '$nickname';");
 		
+		return $data->fetch_assoc();
 	}
 	
-	public function setPlayerLevel($nickname, $faction){
+	public function setPlayerLevel(string $nickname, int $level){
+		self::$database->query(
+		"UPDATE `users`
+		SET `factionLevel` = $level
+		WHERE `nickname` = '$nickname';");
 		
+		return;
 	}
 	
-	public function setHome($x, $y, $z, $faction){
+	public function setHome(int $x, int $y, int $z, string $faction){
+		// если нет дома
+		if(self::$database->getHome($faction) == null){
+			self::$database ->query(
+			"INSERT INTO `homes` (x, y, z, factionName) VALUES
+			($x, $y, $z, '$faction');");
+		} else {
+		// если есть
+			self::$database->query(
+			"UPDATE `homes`
+			SET `x` = $x, `y` = $y, `z` = $z
+			WHERE `factionName` = '$faction';");
+		}
 		
+		return;
 	}
 
-	public function deleteHome($faction){
-		
+	public function deleteHome(string $faction){
+		self::$database->query(
+		"DELETE FROM `homes` 
+		WHERE `factionName` = '$faction';");
+	
+		return;
+	}
+	
+	public function getHome(string $faction){
+		$data = self::$database->query(
+		"SELECT * FROM `homes` 
+		WHERE `factionName` = '$faction'");
+	
+		return $data->fetch_assoc();
 	}
 	
 	public function close(){
