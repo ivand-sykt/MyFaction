@@ -2,15 +2,20 @@
 lang_selected: "§bEnglish has been selected"
 noPermission: "§cYou don't have enough permissions!"
 
-faction_help: "---- §6MyFaction §f----"
 faction_notIn: "§cYou are not in faction!"
 faction_notLeader: "§cYou are not the leader of the faction"
 faction_noName: "§cYou didn't type faction's name!"
-faction_deleted: "§aYou've successfully deleted your faction!"
 faction_already: "§cYou are already in faction!"
 faction_noPlayer: "§cYou didn't type the player!"
 faction_noRank: "§cYou didn't type the rank!"
+faction_notSelf: "§cYou can't do this on yourself!"
+faction_wrongLevel: "§cYou've typed wrong rank"
+faction_notOnline: "§cThis player is not online!"
+
+faction_help: "---- §6MyFaction §f----"
+faction_deleted: "§aYou've successfully deleted your faction!"
 faction_setHome: "§aYou've successfully set faction's home!"
 faction_delHome: "§aYou've successfully deleted faction's home!"
-faction_notSelf: "§cYou can't do this on yourself!"
+faction_level: "§aYou've successfully changed player's rank!"
+faction_invited: "§aYou've successfullt invited player to faction!"
 ...

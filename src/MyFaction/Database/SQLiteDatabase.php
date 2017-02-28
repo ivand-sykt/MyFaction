@@ -19,10 +19,12 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 	
 	public function db_init(){
 		self::$database = new \SQLite3($this->dataPath . $this->config->get('database'). '.db'); 
-		
+		// faction name - name in lower case
+		// faction mask - shown name
 		$factionInit =
 		"CREATE TABLE IF NOT EXISTS `factions` (
 			factionName VARCHAR(255) NOT NULL PRIMARY KEY,
+			factionMask VARCHAR(255) NOT NULL,
 			exp INT NOT NULL,
 			level INT NOT NULL,
 			leader VARCHAR(16) NOT NULL
@@ -32,7 +34,8 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 		$usersInit =
 		"CREATE TABLE IF NOT EXISTS `users` (
 			nickname VARCHAR(16) NOT NULL PRIMARY KEY,
-			factionName TEXT NOT NULL,
+			factionName VARCHAR(255) NOT NULL,
+			factionMask VARCHAR(255) NOT NULL,
 			exp INT NOT NULL,
 			factionLevel INT NOT NULL
 		);

@@ -23,11 +23,11 @@ class FactionCommand implements CommandExecutor {
 		if($sender instanceof Player){
 
 			$senderName = strtolower($sender->getName());
-			$data = $this->database->getPlayerInfo($senderName);
+			$senderData = $this->database->getPlayerInfo($senderName);
 			
 			switch(array_shift($args)) {
 				case "create":
-					if($data != null){
+					if($senderData != null){
 						$sender->sendMessage($this->language->getMessage('faction_already'));
 						return;
 					}
@@ -35,7 +35,7 @@ class FactionCommand implements CommandExecutor {
 				break;
 				
 				case "home":
-					if($data == null){
+					if($senderData == null){
 						$sender->sendMessage($this->language->getMessage('faction_notIn'));
 						return;
 					}
@@ -47,15 +47,27 @@ class FactionCommand implements CommandExecutor {
 				break;
 				
 				case "info":
-				
+					if(!isset($args[0])){
+						
+						return;
+					}
+					
 				break;
 				
 				case "leave":
-				
+					if($senderData == null){
+						$sender->sendMessage($this->language->getMessage('faction_notIn'));
+						return;
+					}
+					
 				break;
 				
 				case "accept":
-				
+					if($senderData != null){
+						$sender->sendMessage($this->language->getMessage('faction_already'));
+						return;
+					}
+					
 				break;
 			}
 

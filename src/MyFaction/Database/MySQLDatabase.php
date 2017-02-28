@@ -22,9 +22,12 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		
 		self::$database->select_db('plugins');
 		
+		// faction name - name in lower case
+		// faction mask - shown name
 		$factionInit =
 		"CREATE TABLE IF NOT EXISTS `factions` (
 			factionName VARCHAR(255) NOT NULL PRIMARY KEY,
+			factionMask VARCHAR(255) NOT NULL,
 			exp INT NOT NULL,
 			level INT NOT NULL,
 			leader VARCHAR(16) NOT NULL
@@ -34,7 +37,8 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		$usersInit =
 		"CREATE TABLE IF NOT EXISTS `users` (
 			nickname VARCHAR(16) NOT NULL PRIMARY KEY,
-			factionName varchar(255) NOT NULL,
+			factionName VARCHAR(255) NOT NULL,
+			factionMask VARCHAR(255) NOT NULL,
 			exp INT NOT NULL,
 			factionLevel INT NOT NULL
 		);
@@ -129,7 +133,7 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 	
 	public function setHome(int $x, int $y, int $z, string $faction){
 		// если нет дома
-		if(self::$database->getHome($faction) == null){
+		if($this->getHome($faction) == null){
 			self::$database ->query(
 			"INSERT INTO `homes` (x, y, z, factionName) VALUES
 			($x, $y, $z, '$faction');");

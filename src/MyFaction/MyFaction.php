@@ -17,6 +17,7 @@ class MyFaction extends PluginBase {
 	
 	public $database;
 	public static $instance;
+	public $invites;
 	
 	public function onEnable(){
 		@mkdir($this->getDataFolder());
@@ -68,7 +69,29 @@ class MyFaction extends PluginBase {
 		return self::$instance;
 	}
 
+	public static function getPlayerFactionName(string $nickname){
+		$data = $this->database->getPlayerInfo(strtolower($nickname));
+		if($data == null) {
+			return null;
+		}
+		
+		return $data['factionMask'];
+	}
 	### INTERNAL ###
+	
+	public function pendInvite($nickname, $factionName){
+		$this->invites[$nickname] = $factionName;
+		return;
+	}
+	
+	public function removeInvite($nickname){
+		unset($this->invites[$nickname]);
+		return;
+	}
+	
+	public function getInvite($nickname){
+		return $this->invites[$nickname];
+	}
 	
 	public function getLanguage(){
 		return $this->language;
