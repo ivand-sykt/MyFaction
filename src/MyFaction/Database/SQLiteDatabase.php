@@ -3,6 +3,7 @@
 namespace MyFaction\Database;
 
 use MyFaction\Database\BaseDatabase;
+use MyFaction\MyFaction;
 
 use pocketmine\Thread;
 
@@ -13,6 +14,7 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 	public function __construct($dataPath, $config){
 		$this->dataPath = $dataPath;
 		$this->config = $config;
+		$this->db_init();
 	}
 	
 	public function db_init(){
@@ -20,7 +22,7 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 		
 		$factionInit =
 		"CREATE TABLE IF NOT EXISTS `factions` (
-			factionName TEXT NOT NULL PRIMARY KEY,
+			factionName VARCHAR(255) NOT NULL PRIMARY KEY,
 			exp INT NOT NULL,
 			level INT NOT NULL,
 			leader VARCHAR(16) NOT NULL
@@ -38,7 +40,7 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 		
 		$homesInit =
 		"CREATE TABLE IF NOT EXISTS `homes` (
-			factionName TEXT NOT NULL PRIMARY KEY,
+			factionName VARCHAR(255) NOT NULL PRIMARY KEY,
 			x INT NOT NULL,
 			y INT NOT NULL,
 			z INT NOT NULL
@@ -48,17 +50,20 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 		self::$database->query($factionInit);
 		self::$database->query($usersInit);
 		self::$database->query($homesInit);
+
 		$this->start();
 	}
 	
 	public function registerFaction($faction, $owner) {
+		$level = MyFaction::LEADER_LEVEL;
+		
 		self::$database->query(
 		"INSERT INTO `factions` (factionName, exp, level, leader) VALUES
 		('$faction', 0, 1, '$owner');");
 		
 		self::$database->query(
 		"INSERT INTO `users` (nickname, factionName, exp, factionLevel) VALUES
-		('$owner', '$faction', 0, 4);");
+		('$owner', '$faction', 0, $level);");
 		
 		return;
 	}
@@ -100,7 +105,7 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 	}
 	
 	public function run() {
-		//do nothing
+		// do nothing
 	}
 	
 	public function getThreadName(){

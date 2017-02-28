@@ -3,6 +3,7 @@
 namespace MyFaction\Database;
 
 use MyFaction\Database\BaseDatabase;
+use MyFaction\MyFaction;
 
 use pocketmine\Thread;
 
@@ -13,11 +14,12 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 	public function __construct($dataPath, $config){
 		$this->dataPath = $dataPath;
 		$this->config = $config;
-		
-		self::$database = new \mysqli($this->config->get('ip'), $this->config->get('username'), $this->config->get('password')); 
+		$this->db_init();
 	}
 	
 	public function db_init(){
+		self::$database = new \mysqli($this->config->get('ip'), $this->config->get('username'), $this->config->get('password'));
+		
 		self::$database->select_db('plugins');
 		
 		$factionInit =
@@ -62,14 +64,32 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		self::$database->query(
 		"INSERT INTO `users` (nickname, factionName, exp, factionLevel) VALUES
 		('$owner', '$faction', 0, 4);");
+		
+		return;
 	}
 	
 	public function deleteFaction($faction){
+		self::$database->query(
+		"DELETE FROM `factions`
+		WHERE `factionName` = '$faction';");
 		
+		self::$database->query(
+		"DELETE FROM `users`
+		WHERE `factionName` = '$faction';");
+		
+		self::$database->query(
+		"DELETE FROM `homes`
+		WHERE `factionName` = '$faction'");
+		
+		return;
 	}
 	
 	public function getFactionInfo($faction){
+		$data = self::$database->query(
+		"SELECT * FROM `factions` 
+		WHERE `factionName` = '$faction'");
 		
+		return $data->fetch_assoc();
 	}
 	
 	public function registerPlayer($nickname, $faction){

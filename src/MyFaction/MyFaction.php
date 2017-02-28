@@ -39,8 +39,6 @@ class MyFaction extends PluginBase {
 				$this->database = new Database\SQLiteDatabase($this->getDataFolder(), $this->config);
 		}
 	
-		$this->database->db_init();
-		
 		self::$instance = $this;
 	}
 	
