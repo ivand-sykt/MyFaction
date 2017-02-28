@@ -1,0 +1,30 @@
+---
+# Database type (mysql, sqlite)
+# Тип базы данных
+type: sqlite
+
+# Database IP
+# IP базы данных 
+# (mysql)
+ip: '127.0.0.1'
+# Database username 
+# Имя пользователя 
+# (mysql)
+username: 'auth'
+# Username's password
+# Пароль пользователя
+# (mysql)
+password: '12345'
+# Database name
+# Имя базы данных
+# (mysql, sqlite)
+database: 'authdb'
+# Database tables prefix
+# Префикс таблиц базы данных
+# (mysql, sqlite)
+table_prefix: ''
+
+# Plugin language (ru/en)
+# Язык плагина
+language: 'en'
+...
