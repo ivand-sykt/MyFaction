@@ -8,6 +8,8 @@ interface BaseDatabase {
 	
 	public function deleteFaction(string $faction);
 	
+	public function changeOwnership(string $oldLeader, string $newLeader, string $faction);
+	
 	public function getFactionInfo(string $faction);
 	
 	public function registerPlayer(string $nickname, string $faction);

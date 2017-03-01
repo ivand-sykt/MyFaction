@@ -29,7 +29,6 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 			factionName VARCHAR(255) NOT NULL PRIMARY KEY,
 			factionMask VARCHAR(255) NOT NULL,
 			exp INT NOT NULL,
-			level INT NOT NULL,
 			leader VARCHAR(16) NOT NULL
 		);
 		";
@@ -61,13 +60,16 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 	}
 	
 	public function registerFaction(string $faction, string $owner) {
-		self::$database->query(
-		"INSERT INTO `factions` (factionName, exp, level, leader) VALUES
-		('$faction', 0, 1, '$owner');");
+		$factionName = strtolower($faction);
+		$level = MyFaction::LEADER_LEVEL;
 		
 		self::$database->query(
-		"INSERT INTO `users` (nickname, factionName, exp, factionLevel) VALUES
-		('$owner', '$faction', 0, 4);");
+		"INSERT INTO `factions` (factionName, factionMask, exp, leader) VALUES
+		('$factionName', '$faction', 0, '$owner');");
+		
+		self::$database->query(
+		"INSERT INTO `users` (nickname, factionName, factionMask, exp, factionLevel) VALUES
+		('$owner', '$factionName', '$faction', 0, $level);");
 		
 		return;
 	}
@@ -86,6 +88,19 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		WHERE `factionName` = '$faction'");
 		
 		return;
+	}
+	
+	public function changeOwnership(string $oldLeader, string $newLeader, string $faction){
+		self::$database->query(
+		"UPDATE `factions` 
+		SET leader='$newLeader'
+		WHERE factionName = '$faction';");
+		
+		$officerLevel = MyFaction::OFFICER_LEVEL;
+		$leaderLevel = MyFaction::LEADER_LEVEL;
+		
+		$this->setPlayerLevel($oldLeader, $officerLevel);
+		$this->setPlayerLevel($newLeader, $leaderLevel);
 	}
 	
 	public function getFactionInfo(string $faction){

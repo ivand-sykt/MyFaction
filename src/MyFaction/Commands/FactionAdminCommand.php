@@ -139,7 +139,7 @@ class FactionAdminCommand implements CommandExecutor {
 						return;
 					}
 					
-					if($commiter['faction'] != $targer['faction']){
+					if($commiter['faction'] != $target['faction']){
 						$sender->sendMessage($this->language->getMessage('noPermission'));
 						return;
 					}
@@ -149,7 +149,12 @@ class FactionAdminCommand implements CommandExecutor {
 						$sender->sendMessage($this->language->get('noPermission'));
 						return;
 					}
-
+					// officer tries to kick officer
+					if($commiter['factionLevel'] == MyFaction::OFFICER_LEVEL and $target['factionLevel'] == MyFaction::OFFICER_LEVEL){
+						$sender->sendMessage($this->language->get('noPermission'));
+						return;
+					}
+					
 					$this->database->kickPlayer($targetName);
 					
 				break;
@@ -177,7 +182,30 @@ class FactionAdminCommand implements CommandExecutor {
 				break;
 				
 				case "changeowner":
-				
+					if($senderData['factionLevel'] != MyFaction::LEADER_LEVEL){
+						$sender->sendMessage($this->language->get('noPermission'));
+						return;
+					} 
+					
+					if(!isset($args[0])){
+						$sender->sendMessage($this->language->getMessage('faction_noPlayer'));
+						return;
+					}
+					
+					$targetName = strtolower($args[0]);
+					$targetData = $this->database->getPlayerInfo($targetName);
+					
+					if($targetData == null){
+						$sender->sendMessage($this->language->getMessage('faction_noTargetIn'));
+						return;
+					}
+					
+					if($targetData['factionName'] != $senderData['factionName']){
+						$sender->sendMessage($this->language->get('faction_notSame'));
+						return;
+					}
+					
+					$this->database->changeOwnership($senderName, $targetName, $senderData['factionName']);
 				break;
 			}
 		}

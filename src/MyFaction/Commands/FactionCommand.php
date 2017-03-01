@@ -6,6 +6,8 @@ use MyFaction\MyFaction;
 
 use pocketmine\Player;
 
+use pocketmine\math\Vector3;
+
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
@@ -32,6 +34,14 @@ class FactionCommand implements CommandExecutor {
 						return;
 					}
 					
+					if(!isset($args[0])){
+						$sender->sendMessage($this->language->getMessage('faction_noName'));
+						return;
+					}
+					
+					// economy TODO
+					
+					$this->database->registerFaction($args[0], $senderName);
 				break;
 				
 				case "home":
@@ -40,6 +50,14 @@ class FactionCommand implements CommandExecutor {
 						return;
 					}
 					
+					$home = $this->database->getHome($senderData['factionName']);
+					if($home == null){
+						$sender->sendMessage($this->language->getMessage('faction_noHome'));
+						return;
+					}
+					
+					$sender->teleport(new Vector3($home['x'], $home['y'], $home['z']));
+					$sender->sendMessage($this->language->getMessage('faction_home'));
 				break;
 				
 				case "help":
@@ -60,6 +78,13 @@ class FactionCommand implements CommandExecutor {
 						return;
 					}
 					
+					if($senderData['factionLevel'] == MyFaction::LEADER_LEVEL){
+						$sender->sendMessage($this->language->getMessage('noPermission'));
+						return;
+					}
+					
+					$this->database->kickPlayer($senderName);
+					$sender->sendMessage($this->language->getMessage('faction_left'));
 				break;
 				
 				case "accept":

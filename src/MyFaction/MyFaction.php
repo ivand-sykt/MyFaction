@@ -101,4 +101,7 @@ class MyFaction extends PluginBase {
 		return $this->database;
 	}
 	
+	public function getFactionLevel(int $exp){
+		//todo
+	}
 }
