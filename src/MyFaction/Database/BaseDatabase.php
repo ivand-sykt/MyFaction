@@ -12,6 +12,8 @@ interface BaseDatabase {
 	
 	public function getFactionInfo(string $faction);
 	
+	public function getFactionPlayers(string $faction);
+	
 	public function registerPlayer(string $nickname, string $faction);
 	
 	public function kickPlayer(string $nickname);

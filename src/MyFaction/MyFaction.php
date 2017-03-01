@@ -59,7 +59,7 @@ class MyFaction extends PluginBase {
 	### API ###
 	
 	/*
-	** Call this first, if you want to intercat with API
+	** Call this first, if you want to interact with plugin API
 	** In main class of your plugin:
 	** $api = $this->getServer()->getPluginManager()->getPlugin('MyFaction')
 	** $api::getInstance();
@@ -103,5 +103,11 @@ class MyFaction extends PluginBase {
 	
 	public function getFactionLevel(int $exp){
 		//todo
+		return 20;
+	}
+	
+	public function getMaxExp(int $level){
+		//todo
+		return 2000;
 	}
 }

@@ -111,6 +111,20 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		return $data->fetch_assoc();
 	}
 	
+	public function getFactionPlayers(string $faction){
+		$data = self::$database->query(
+		"SELECT nickname FROM `users`
+		WHERE factionName = '$faction';");
+		
+		$players = null;
+		
+		while($row = $data->fetchArray(SQLITE3_ASSOC)){
+			$players[] = $row['nickname'];
+		}
+
+		return $players;
+	}
+	
 	public function registerPlayer(string $nickname, string $faction){
 		$level = MyFaction::NORMAL_LEVEL;
 		

@@ -27,4 +27,16 @@ table_prefix: ''
 # Plugin language (ru/en)
 # Язык плагина
 language: 'en'
+
+# Use economy (EconomyAPI)?
+# Использовать экономику?
+use_economy: true
+
+# Do players need to pay money for creating faction?
+# Должны ли игроки платить за создание клана?
+paid_faction: true
+
+# How much money does player need to pay for faction creation?
+# Сколько денег должен платить игрок за создание клана?
+faction_cost: 1000
 ...

@@ -66,8 +66,31 @@ class FactionCommand implements CommandExecutor {
 				
 				case "info":
 					if(!isset($args[0])){
+
+						if($senderData == null){
+							$sender->sendMessage($this->language->getMessage('faction_notIn'));
+							return;
+						}
 						
-						return;
+						$factionData = $this->database->getFactionInfo($senderData['factionName']);
+						$level = $this->plugin->getFactionLevel($factionData['exp']);
+						$players = implode($this->database->getFactionPlayers($senderData['factionName']));
+						
+						$message = $this->language->getMessage('info_self',
+						['{faction}', '{leader}', '{level}', '{factionLevel}', '{minexp}', '{maxexp}', '{exp}', '{players}'],
+						[$senderData['factionMask'], $factionData['leader'], $this->getLevelName($senderData['factionLevel']), $level, $factionData['exp'], $this->plugin->getMaxExp($level), $senderData['exp'], $players]);
+						$sender->sendMessage($message);
+					} else {
+						//info about faction in args0				
+						$factionName = strtolower($args[0]);
+						
+						$factionData = $this->database->getFactionInfo($factionName);
+						$level = $this->plugin->getFactionLevel($factionName);
+						$players = implode($this->database->getFactionPlayers($factionName));
+						
+						$message = $this->language->getMessage('info_other',
+						['{faction}', '{leader}', '{factionLevel}', '{minexp}', '{maxexp}', '{players}'],
+						[$factionData['factionMask'], $factionData['leader'], $level, $factionData['exp'], $this->plugin->getMaxExp($level), $players]);
 					}
 					
 				break;
@@ -101,4 +124,23 @@ class FactionCommand implements CommandExecutor {
 	
 	}
 	
+	private function getLevelName(int $level){
+		switch($level){
+			case MyFaction::NORMAL_LEVEL:
+				return $this->language->getMessage('player');
+			break;
+			
+			case MyFaction::CAPITAIN_LEVEL:
+				return $this->language->getMessage('capitain');
+			break;
+			
+			case MyFaction::OFFICER_LEVEL:
+				return $this->language->getMessage('officer');
+			break;
+			
+			case MyFaction::LEADER_LEVEL:
+				return $this->language->getMessage('leader');
+			break;
+		}
+	}
 }

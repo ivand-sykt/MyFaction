@@ -108,6 +108,20 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 		return $data->fetchArray(SQLITE3_ASSOC);
 	}
 	
+	public function getFactionPlayers(string $faction){
+		$data = self::$database->query(
+		"SELECT nickname FROM `users`
+		WHERE factionName = '$faction';");
+		
+		$players = null;
+		
+		while($row = $data->fetchArray(SQLITE3_ASSOC)){
+			$players[] = $row['nickname'];
+		}
+
+		return $players;
+	}
+	
 	public function registerPlayer(string $nickname, string $faction){
 		$level = MyFaction::NORMAL_LEVEL;
 		

@@ -1,4 +1,7 @@
 ---
+# \n - new line
+# if you want to use quotes (") in your message, type \" instead of "
+# otherwise, you will get an error
 lang_selected: "§bEnglish has been selected"
 noPermission: "§cYou don't have enough permissions!"
 
@@ -23,4 +26,22 @@ faction_level: "§aYou've successfully changed player's rank!"
 faction_invited: "§aYou've successfully invited player to faction!"
 faction_home: "§aYou've successfully teleported to faction's home!"
 faction_left: "§aYou've successfully left your faction!"
+
+leader: "Leader"
+officer: "Officer"
+capitain: "Capitain"
+player: "Member"
+
+info_self: "§e---- §aInformation about your faction §e----
+\n§6You are in faction §f{faction}
+\n§aFaction leader: §f{leader}
+\n§aYour faction rank: §f{level}
+\n§aFaction level: §f{factionLevel} ({minexp}/{maxexp})
+\n§aYour faction expirence: {exp}exp
+\n§aFaction members: §f{players}"
+
+info_other: "§e---- §aInformation about {faction} §e----
+\n§aFaction leader: §f{leader}
+\n§aFaction level: §f{factionLevel} ({minexp}/{maxexp})
+\n§aFaction members: §f{players}"
 ...
