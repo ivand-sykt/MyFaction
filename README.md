@@ -39,6 +39,7 @@ MyFaction is simple factions plugin.
 
 ## Configuration: 
 | Parameter | Value type | Description |
+| --- | --- | --- |
 | `type` | `sqlite`, `mysql` | Database type |
 | `ip` | IP v4 | Database IP (MySQL) |
 | `username` | string | Database username (MySQL) |
