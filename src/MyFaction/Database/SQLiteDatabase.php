@@ -101,6 +101,8 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 	}
 	
 	public function getFactionInfo(string $faction){
+		$faction = strtolower($faction);
+		
 		$data = self::$database->query(
 		"SELECT * FROM `factions` 
 		WHERE `factionName` = '$faction'");

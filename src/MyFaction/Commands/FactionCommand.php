@@ -22,106 +22,137 @@ class FactionCommand implements CommandExecutor {
 
 	public function onCommand(CommandSender $sender, Command $command, $label, array $args){
 
-		if($sender instanceof Player){
+		if(!$sender instanceof Player){
+			$sender->sendMessage($this->language->getMessage('ingame'));
+			return;
+		}
 
-			$senderName = strtolower($sender->getName());
-			$senderData = $this->database->getPlayerInfo($senderName);
+		$senderName = strtolower($sender->getName());
+		$senderData = $this->database->getPlayerInfo($senderName);
+		
+		switch(array_shift($args)) {
+			case "help":
+				$sender->sendMessage($this->language->getMessage('faction_help'));
+			break;
 			
-			switch(array_shift($args)) {
-				case "create":
-					if($senderData != null){
-						$sender->sendMessage($this->language->getMessage('faction_already'));
-						return;
-					}
-					
-					if(!isset($args[0])){
-						$sender->sendMessage($this->language->getMessage('faction_noName'));
-						return;
-					}
-					
-					// economy TODO
-					
-					$this->database->registerFaction($args[0], $senderName);
-				break;
+			case "create":
+				if(isset($senderData['factionName'])){
+					$sender->sendMessage($this->language->getMessage('faction_alreadyIn'));
+					return;
+				}
 				
-				case "home":
-					if($senderData == null){
-						$sender->sendMessage($this->language->getMessage('faction_notIn'));
-						return;
-					}
+				if(!isset($args[0])){
+					$sender->sendMessage($this->language->getMessage('faction_noName'));
+					return;
+				}
 					
-					$home = $this->database->getHome($senderData['factionName']);
-					if($home == null){
-						$sender->sendMessage($this->language->getMessage('faction_noHome'));
-						return;
-					}
+				$data = $this->database->getFactionInfo($args[0]);
+				
+				if(isset($data['factionName'])){
+					$sender->sendMessage($this->language->getMessage('faction_already'));
+					return;
+				}
+				
+				if($this->plugin->config->get('use_economy')){
+					if($this->plugin->config->get('paid_faction')){
 					
-					$sender->teleport(new Vector3($home['x'], $home['y'], $home['z']));
-					$sender->sendMessage($this->language->getMessage('faction_home'));
-				break;
-				
-				case "help":
-
-				break;
-				
-				case "info":
-					if(!isset($args[0])){
-
-						if($senderData == null){
-							$sender->sendMessage($this->language->getMessage('faction_notIn'));
+						$economy = $this->plugin->getEconomy();
+						(int) $cost = $this->plugin->config->get('faction_cost');
+						(int) $money = $economy->myMoney($senderName);
+						
+						if(!($money >= $cost)){
+							$sender->sendMessage($this->language->getMessage('faction_noMoney', ['{needed}', '{current}'], [$cost, $money]));
 							return;
 						}
-						
-						$factionData = $this->database->getFactionInfo($senderData['factionName']);
-						$level = $this->plugin->getFactionLevel($factionData['exp']);
-						$players = implode($this->database->getFactionPlayers($senderData['factionName']));
-						
-						$message = $this->language->getMessage('info_self',
-						['{faction}', '{leader}', '{level}', '{factionLevel}', '{minexp}', '{maxexp}', '{exp}', '{players}'],
-						[$senderData['factionMask'], $factionData['leader'], $this->getLevelName($senderData['factionLevel']), $level, $factionData['exp'], $this->plugin->getMaxExp($level), $senderData['exp'], $players]);
-						$sender->sendMessage($message);
-					} else {
-						//info about faction in args0				
-						$factionName = strtolower($args[0]);
-						
-						$factionData = $this->database->getFactionInfo($factionName);
-						$level = $this->plugin->getFactionLevel($factionName);
-						$players = implode($this->database->getFactionPlayers($factionName));
-						
-						$message = $this->language->getMessage('info_other',
-						['{faction}', '{leader}', '{factionLevel}', '{minexp}', '{maxexp}', '{players}'],
-						[$factionData['factionMask'], $factionData['leader'], $level, $factionData['exp'], $this->plugin->getMaxExp($level), $players]);
-					}
 					
-				break;
+					}
+				}
 				
-				case "leave":
-					if($senderData == null){
+				$this->database->registerFaction($args[0], $senderName);
+				$sender->sendMessage($this->language->getMessage('faction_created'));
+				if($this->plugin->config->get('use_economy')) $economy->reduceMoney($senderName, $cost);
+			
+			break;
+			
+			case "home":
+				if($senderData == null){
+					$sender->sendMessage($this->language->getMessage('faction_notIn'));
+					return;
+				}
+				
+				$home = $this->database->getHome($senderData['factionName']);
+				if($home == null){
+					$sender->sendMessage($this->language->getMessage('faction_noHome'));
+					return;
+				}
+				
+				$sender->teleport(new Vector3($home['x'], $home['y'], $home['z']));
+				$sender->sendMessage($this->language->getMessage('faction_home'));
+			break;
+			
+			case "info":
+				if(!isset($args[0])){
+						if($senderData == null){
 						$sender->sendMessage($this->language->getMessage('faction_notIn'));
 						return;
-					}
+				}
 					
-					if($senderData['factionLevel'] == MyFaction::LEADER_LEVEL){
-						$sender->sendMessage($this->language->getMessage('noPermission'));
-						return;
-					}
+					$factionData = $this->database->getFactionInfo($senderData['factionName']);
+					(int) $level = $this->plugin->getFactionLevel($factionData['exp']);
+					$data = $this->database->getFactionPlayers($senderData['factionName']);
 					
-					$this->database->kickPlayer($senderName);
-					$sender->sendMessage($this->language->getMessage('faction_left'));
-				break;
+					$players = implode(', ', $data);
+					
+					$message = $this->language->getMessage('info_self',
+					['{faction}', '{leader}', '{level}', '{factionLevel}', '{minexp}', '{maxexp}', '{exp}', '{players}'],
+					[$senderData['factionMask'], $factionData['leader'], $this->getLevelName($senderData['factionLevel']), $level, $factionData['exp'], $this->plugin->getMaxExp($level), $senderData['exp'], $players]);
+					$sender->sendMessage($message);
+				} else {
+					//info about faction in args0				
+					$factionName = strtolower($args[0]);
+					
+					$factionData = $this->database->getFactionInfo($factionName);
+					$level = $this->plugin->getFactionLevel($factionName);
+					$players = implode($this->database->getFactionPlayers($factionName));
+					
+					$message = $this->language->getMessage('info_other',
+					['{faction}', '{leader}', '{factionLevel}', '{minexp}', '{maxexp}', '{players}'],
+					[$factionData['factionMask'], $factionData['leader'], $level, $factionData['exp'], $this->plugin->getMaxExp($level), $players]);
+				}
+					
+			break;
 				
-				case "accept":
-					if($senderData != null){
-						$sender->sendMessage($this->language->getMessage('faction_already'));
-						return;
-					}
-					
-				break;
-			}
-
-
+			case "leave":
+				if($senderData == null){
+					$sender->sendMessage($this->language->getMessage('faction_notIn'));
+					return;
+				}
+				
+				if($senderData['factionLevel'] == MyFaction::LEADER_LEVEL){
+					$sender->sendMessage($this->language->getMessage('noPermission'));
+					return;
+				}
+				
+				$this->database->kickPlayer($senderName);
+				$sender->sendMessage($this->language->getMessage('faction_left'));
+			break;
+			
+			case "accept":
+				if($senderData != null){
+					$sender->sendMessage($this->language->getMessage('faction_already'));
+					return;
+				}
+				
+				$invite = $this->plugin->getInvite($senderName);
+				
+				if($invite == null){
+					$sender->sendMessage($this->language->getMessage('faction_noInvite'));
+					return;
+				}
+				
+			break;
 		}
-	
+
 	}
 	
 	private function getLevelName(int $level){

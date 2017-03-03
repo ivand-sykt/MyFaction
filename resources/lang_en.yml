@@ -4,11 +4,15 @@
 # otherwise, you will get an error
 lang_selected: "§bEnglish has been selected"
 noPermission: "§cYou don't have enough permissions!"
+ingame: "§cYou must run this command in-game!"
+
+economy_found: "§aEconomyAPI has been found!"
+economy_not_found: "§cCouldn't find EconomyAPI... Disabling plugin..."
 
 faction_notIn: "§cYou are not in faction!"
 faction_notLeader: "§cYou are not the leader of the faction"
 faction_noName: "§cYou didn't type faction's name!"
-faction_already: "§cYou are already in faction!"
+faction_alreadyIn: "§cYou are already in faction!"
 faction_noPlayer: "§cYou didn't type the player!"
 faction_noRank: "§cYou didn't type the rank!"
 faction_notSelf: "§cYou can't do this on yourself!"
@@ -17,6 +21,8 @@ faction_notOnline: "§cThis player is not online!"
 faction_notSame: "§cPlayer must be in the same faction as you!"
 faction_noTargetIn: "§cThis player is not in faction!"
 faction_noHome: "§cThis faction does not have home point!"
+faction_already: "§cThere is already faction with that name!"
+faction_noMoney: "§cYou don't have enough money! (you need ${needed}, but you have ${current}"
 
 faction_help: "---- §6MyFaction §f----"
 faction_deleted: "§aYou've successfully deleted your faction!"
@@ -26,6 +32,14 @@ faction_level: "§aYou've successfully changed player's rank!"
 faction_invited: "§aYou've successfully invited player to faction!"
 faction_home: "§aYou've successfully teleported to faction's home!"
 faction_left: "§aYou've successfully left your faction!"
+faction_created: "§aYou've successfully created faction!"
+faction_changedOwner: "§aYou've successfully changed faction's ownership!"
+
+faction_noInvite: "§cYou aren't invited to any faction!"
+faction_sent: "§aYou've successfully sent invitation to player {player}!"
+faction_invited: "§aYou've been invited to faction {faction} by {issuer}!"
+faction_inviteAccepted: "§aYou've successfully accepted invite to faction {faction}!"
+invite_already: "§cThis player is already invited to another faction!"
 
 leader: "Leader"
 officer: "Officer"
@@ -44,4 +58,6 @@ info_other: "§e---- §aInformation about {faction} §e----
 \n§aFaction leader: §f{leader}
 \n§aFaction level: §f{factionLevel} ({minexp}/{maxexp})
 \n§aFaction members: §f{players}"
+
+faction_help: ""
 ...

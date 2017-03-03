@@ -10,15 +10,15 @@ ip: '127.0.0.1'
 # Database username 
 # Имя пользователя 
 # (mysql)
-username: 'auth'
+username: 'username'
 # Username's password
 # Пароль пользователя
 # (mysql)
-password: '12345'
+password: 'password'
 # Database name
 # Имя базы данных
 # (mysql, sqlite)
-database: 'authdb'
+database: 'username'
 # Database tables prefix
 # Префикс таблиц базы данных
 # (mysql, sqlite)

@@ -3,6 +3,7 @@
 namespace MyFaction;
 
 use MyFaction\Language;
+use MyFaction\EconomyManager;
 
 use pocketmine\utils\Config;
 
@@ -15,9 +16,12 @@ class MyFaction extends PluginBase {
 	const CAPITAIN_LEVEL = 2;
 	const NORMAL_LEVEL = 1;
 	
+	const BASE_EXP = 100;
+	
 	public $database;
 	public static $instance;
 	public $invites;
+	public $economy;
 	
 	public function onEnable(){
 		@mkdir($this->getDataFolder());
@@ -49,6 +53,12 @@ class MyFaction extends PluginBase {
 		
 		$this->getCommand("faction")->setExecutor(new Commands\FactionCommand($this));
 		$this->getCommand("factionadmin")->setExecutor(new Commands\FactionAdminCommand($this));
+		
+		if($this->config->get('use_economy')){
+			$this->economy = new EconomyManager($this);
+			$this->economy->economy_init();
+		}
+		
 		self::$instance = $this;
 	}
 	
@@ -71,26 +81,32 @@ class MyFaction extends PluginBase {
 
 	public static function getPlayerFactionName(string $nickname){
 		$data = $this->database->getPlayerInfo(strtolower($nickname));
-		if($data == null) {
-			return null;
-		}
 		
-		return $data['factionMask'];
+		return $data['factionMask'] ?? null;
 	}
 	### INTERNAL ###
 	
 	public function pendInvite($nickname, $factionName){
+		if($nickname instanceof Player){
+			$nickname = $player->getName();
+		}
+		
+		$nickname = strtolower($nickname);
 		$this->invites[$nickname] = $factionName;
 		return;
 	}
 	
-	public function removeInvite($nickname){
+	public function removeInvite($nickname){		
+		if($nickname instanceof Player){
+			$nickname = $player->getName();
+		}
+		
 		unset($this->invites[$nickname]);
 		return;
 	}
 	
 	public function getInvite($nickname){
-		return $this->invites[$nickname];
+		return $this->invites[$nickname] ?? null;
 	}
 	
 	public function getLanguage(){
@@ -101,13 +117,17 @@ class MyFaction extends PluginBase {
 		return $this->database;
 	}
 	
-	public function getFactionLevel(int $exp){
-		//todo
-		return 20;
+	public function getEconomy(){
+		return $this->economy->api;
 	}
 	
-	public function getMaxExp(int $level){
-		//todo
-		return 2000;
+	public function getFactionLevel($exp){
+		return floor(sqrt($exp / self::BASE_EXP));
+	}
+	
+	public function getMaxExp($level){
+		return floor(self::BASE_EXP * pow(($level + 1), 2));
+
+		// level + 1 is required to get next level's max xp, otherwise it will return current level max
 	}
 }

@@ -104,6 +104,8 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 	}
 	
 	public function getFactionInfo(string $faction){
+		$faction = strtolower($faction);
+		
 		$data = self::$database->query(
 		"SELECT * FROM `factions` 
 		WHERE `factionName` = '$faction'");
@@ -118,7 +120,7 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		
 		$players = null;
 		
-		while($row = $data->fetchArray(SQLITE3_ASSOC)){
+		while($row = $data->fetch_assoc()){
 			$players[] = $row['nickname'];
 		}
 
