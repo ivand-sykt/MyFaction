@@ -23,6 +23,7 @@ faction_noTargetIn: "§cЭтот игрок не состоит в клане!"
 faction_noHome: "§cЭтот клан не имеет точки дома!"
 faction_already: "§cКлан с таким именем уже существует!"
 faction_noMoney: "§cУ вас недостаточно денег для создания клана! (надо ${needed}, а у вас ${current})"
+faction_noFaction: "§cТакого клана не существует!"
 
 faction_help: "---- §6MyFaction §f----"
 faction_deleted: "§aВы успешно удалили клан!"
@@ -40,6 +41,10 @@ faction_sent: "§aВы успешно отправили приглашение 
 faction_invited: "§aВы были приглашены в клан {faction} игроком {issuer}!"
 faction_inviteAccepted: "§aВы успешно приняли приглашение в клан {faction}!"
 invite_already: "§cЭтот игрок уже приглашён в клан!"
+invite_declined: "§aВы успешно отклонили приглашение в клан!"
+
+create_wronglen: "§cИмя клана слишком длинное, оно может быть максимум {len} символов!"
+create_wrongName: "§cИмя клана неправильное!"
 
 leader: "Лидер"
 officer: "Офицер"
@@ -54,10 +59,27 @@ info_self: "§e---- §aИнформация о вашем клане §e----
 \n§aВы принесли опыта клану: {exp}exp
 \n§aИгроки в клане: §f{players}"
 
+info_player: "§e---- §aИнформация о {player} §e----
+\n§aКлан: §f{faction}
+\n§aРанг в клане: §f{rank}
+\n§aПринёс опыта: §f{exp}"
+
 info_other: "§e---- §aИнформация о клане {faction} §e----
 \n§aГлава клана: §f{leader}
 \n§aУровень клана: §f{factionLevel} ({minexp}/{maxexp})
 \n§aИгроки в клане: §f{players}"
 
-faction_help: ""
+factionadmin_help: " - /factionadmin delete <имя вашего клана> - удаляет клан (лидер)
+\n - /factionadmin changerank <игрок> <ранг (player, capitain, officer)> - изменяет ранг игрока (лидер)
+\n - /factionadmin sethome - устанавливает точку дома клана (офицер, лидер)
+\n - /factionadmin delhome - удаляет точку дома клана (офицер, лидер)
+\n - /factionadmin kick <игрок> - кикает игрока из клана (офицер, лидер)
+\n - /factionadmin invite <игрок> - приглашает игрока в клан (офицер, лидер)
+\n - /factionadmin changeowner <игрок> - передаёт полномочия лидера клана (лидер)"
+
+faction_help: " - /faction create <имя клана> - создаёт клан
+\n - /faction info [faction name] - информация о клане
+\n - /faction home - телепортация на точку дома клана
+\n - /faction leave - покинуть клан
+\n - /faction accept - принять приглашение в клан"
 ...

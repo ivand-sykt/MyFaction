@@ -13,3 +13,16 @@ commands:
  factionadmin:
   aliases: ["fadmin"]
   description: "Faction admin commands"
+ myfaction:
+  description: "MyFaction plugin configuration"
+  permission: myfaction.myfaction
+  
+permissions:
+ myfaction:
+  description: "Top permission of MyFaction plugin"
+  default: op
+  
+  children:
+   myfaction.myfaction:
+    description: "Allows using /myfaction command"
+    default: op

@@ -115,13 +115,13 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 	
 	public function getFactionPlayers(string $faction){
 		$data = self::$database->query(
-		"SELECT nickname FROM `users`
+		"SELECT nickname, factionLevel FROM `users`
 		WHERE factionName = '$faction';");
 		
 		$players = null;
 		
 		while($row = $data->fetch_assoc()){
-			$players[] = $row['nickname'];
+			$players[$row['nickname']] = $row['factionLevel'];
 		}
 
 		return $players;

@@ -27,7 +27,10 @@ MyFaction is simple factions plugin.
  - `/factionadmin changeowner <player>` - changes faction's leader to `<player>` (leader)
  
 - `/myfaction` - factions configuration of the plugin
-
+ - `/myfaction playerinfo <player>` - gives information about `<player>`
+ - `/myfaction delete <faction>` - deletes `<faction>`
+ - `/myfaction info <faction>` - gives information about `<faction>`
+ 
 ## Available ranks:
 * Player - this rank is given after player accepts invitation to clan
 * Capitain - have the same possibilites as player
@@ -35,8 +38,17 @@ MyFaction is simple factions plugin.
 * Leader - can do everything
 
 ## Configuration: 
-
-
+| Parameter | Value type | Description |
+| `type` | `sqlite`, `mysql` | Database type |
+| `ip` | IP v4 | Database IP (MySQL) |
+| `username` | string | Database username (MySQL) |
+| `password` | string | Database password (MySQL) |
+| `database` | string | Database name |
+| `language` | `en`, `ru` | Plugin language |
+| `use_economy` | bool `(true, false)` | Should plugin use EconomyAPI? |
+| `paid_faction` | bool | Is creating factions paid? |
+| `faction_cost` | int | How much money does creating faction cost? |
+| `faction_length` | int | How long can faction name be? |
 
 ## Planned features:
 * Tropheys

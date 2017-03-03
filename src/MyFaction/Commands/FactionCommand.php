@@ -30,7 +30,7 @@ class FactionCommand implements CommandExecutor {
 		$senderName = strtolower($sender->getName());
 		$senderData = $this->database->getPlayerInfo($senderName);
 		
-		switch(array_shift($args)) {
+		switch(strtolower(array_shift($args))) {
 			case "help":
 				$sender->sendMessage($this->language->getMessage('faction_help'));
 			break;
@@ -50,6 +50,17 @@ class FactionCommand implements CommandExecutor {
 				
 				if(isset($data['factionName'])){
 					$sender->sendMessage($this->language->getMessage('faction_already'));
+					return;
+				}
+				
+				$maxlen = $this->plugin->config->get('faction_length');
+				if(strlen($args[0]) > $maxlen){
+					$sender->sendMessage($this->language->getMessage('create_wronglen', ['{len}'], [$maxlen]));
+					return;
+				}
+		
+				if(preg_match("/^[a-zA-Z0-9_\-]+$/", $args[0]) == false){
+					$sender->sendMessage($this->language->getMessage('create_wrongName'));
 					return;
 				}
 				
@@ -92,28 +103,46 @@ class FactionCommand implements CommandExecutor {
 			
 			case "info":
 				if(!isset($args[0])){
-						if($senderData == null){
+					if($senderData == null){
 						$sender->sendMessage($this->language->getMessage('faction_notIn'));
 						return;
-				}
+					}
 					
 					$factionData = $this->database->getFactionInfo($senderData['factionName']);
-					(int) $level = $this->plugin->getFactionLevel($factionData['exp']);
-					$data = $this->database->getFactionPlayers($senderData['factionName']);
 					
-					$players = implode(', ', $data);
+					(int) $level = $this->plugin->getFactionLevel($factionData['exp']);
+					$data = $this->database->getFactionPlayers($factionData['factionName']);
+					
+					foreach($data as $nickname => $factionLevel){
+						$name = $this->plugin->getRankName($factionLevel);
+						$players[] = "$nickname ($name)";
+					}
+					
+					$players = implode(', ', $players);
 					
 					$message = $this->language->getMessage('info_self',
 					['{faction}', '{leader}', '{level}', '{factionLevel}', '{minexp}', '{maxexp}', '{exp}', '{players}'],
-					[$senderData['factionMask'], $factionData['leader'], $this->getLevelName($senderData['factionLevel']), $level, $factionData['exp'], $this->plugin->getMaxExp($level), $senderData['exp'], $players]);
+					[$senderData['factionMask'], $factionData['leader'], $this->plugin->getRankName($senderData['factionLevel']), $level, $factionData['exp'], $this->plugin->getMaxExp($level), $senderData['exp'], $players]);
 					$sender->sendMessage($message);
 				} else {
 					//info about faction in args0				
 					$factionName = strtolower($args[0]);
 					
 					$factionData = $this->database->getFactionInfo($factionName);
-					$level = $this->plugin->getFactionLevel($factionName);
-					$players = implode($this->database->getFactionPlayers($factionName));
+					
+					if($factionData == null){
+						$sender->sendMessage($this->language->getMessage('faction_noFaction'));
+						return;
+					}
+					
+					$level = $this->plugin->getFactionLevel($factionData['exp']);
+					$data = $this->database->getFactionPlayers($factionData['factionName']);
+					
+					foreach($data as $nickname => $factionLevel){
+						$name = $this->plugin->getRankName($factionLevel);
+						$players[] = "$nickname ($name)";
+					}
+					$players = implode(', ', $players);
 					
 					$message = $this->language->getMessage('info_other',
 					['{faction}', '{leader}', '{factionLevel}', '{minexp}', '{maxexp}', '{players}'],
@@ -149,29 +178,32 @@ class FactionCommand implements CommandExecutor {
 					$sender->sendMessage($this->language->getMessage('faction_noInvite'));
 					return;
 				}
-				
+
+				$sender->sendMessage($this->language->getMessage('invite_accepted', ['{faction}'], [$invite]));
+				$this->plugin->removeInvite($sender);
 			break;
+			
+			case "decline":
+				if($senderData != null){
+					$sender->sendMessage($this->language->getMessage('faction_already'));
+					return;
+				}
+				
+				$invite = $this->plugin->getInvite($senderName);
+				
+				if($invite == null){
+					$sender->sendMessage($this->language->getMessage('faction_noInvite'));
+					return;
+				}
+				
+				$this->plugin->removeInvite($sender);
+				$sender->sendMessage($this->language->getMessage('invite_declined'));
+			break;
+			
+			default:
+				$sender->sendMessage($this->language->getMessage('faction_help'));
 		}
 
 	}
-	
-	private function getLevelName(int $level){
-		switch($level){
-			case MyFaction::NORMAL_LEVEL:
-				return $this->language->getMessage('player');
-			break;
-			
-			case MyFaction::CAPITAIN_LEVEL:
-				return $this->language->getMessage('capitain');
-			break;
-			
-			case MyFaction::OFFICER_LEVEL:
-				return $this->language->getMessage('officer');
-			break;
-			
-			case MyFaction::LEADER_LEVEL:
-				return $this->language->getMessage('leader');
-			break;
-		}
-	}
+
 }

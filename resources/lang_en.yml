@@ -23,6 +23,7 @@ faction_noTargetIn: "§cThis player is not in faction!"
 faction_noHome: "§cThis faction does not have home point!"
 faction_already: "§cThere is already faction with that name!"
 faction_noMoney: "§cYou don't have enough money! (you need ${needed}, but you have ${current}"
+faction_noFaction: "§cThere is no faction with such name!"
 
 faction_help: "---- §6MyFaction §f----"
 faction_deleted: "§aYou've successfully deleted your faction!"
@@ -40,6 +41,10 @@ faction_sent: "§aYou've successfully sent invitation to player {player}!"
 faction_invited: "§aYou've been invited to faction {faction} by {issuer}!"
 faction_inviteAccepted: "§aYou've successfully accepted invite to faction {faction}!"
 invite_already: "§cThis player is already invited to another faction!"
+invite_declined: "§aYou've successfully declined invitation!"
+
+create_wronglen: "§cFaction name is too long, it can be at most {len} characters!"
+create_wrongName: "§cFaction name is wrong!"
 
 leader: "Leader"
 officer: "Officer"
@@ -59,5 +64,22 @@ info_other: "§e---- §aInformation about {faction} §e----
 \n§aFaction level: §f{factionLevel} ({minexp}/{maxexp})
 \n§aFaction members: §f{players}"
 
-faction_help: ""
+info_player: "§e---- §aInformation about {player} §e----
+\n§aFaction: §f{faction}
+\n§aFaction rank: §f{rank}
+\n§aExpirence given: §f{exp}"
+
+factionadmin_help: " - /factionadmin delete <your faction name> - deletes faction with all it's players (leader)
+\n - /factionadmin changerank <player> <rank (player, capitain, officer)> - changes player's rank (leader)
+\n - /factionadmin sethome - sets faction's home to current position (officer, leader)
+\n - /factionadmin delhome - deletes faction's home (officer, leader)
+\n - /factionadmin kick <player> - kicks a player from the faction (officer, leader)
+\n - /factionadmin invite <player> - invites a player to the faction (officer, leader)
+\n - /factionadmin changeowner <player> - changes faction's leader to <player> (leader)"
+
+faction_help: " - /faction create <faction name> - creates a faction
+\n - /faction info [faction name] - gives information about faction
+\n - /faction home - teleports player to faction's home
+\n - /faction leave - leave faction
+\n - /faction accept - accept invitation to faction"
 ...

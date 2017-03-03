@@ -19,10 +19,6 @@ password: 'password'
 # Имя базы данных
 # (mysql, sqlite)
 database: 'username'
-# Database tables prefix
-# Префикс таблиц базы данных
-# (mysql, sqlite)
-table_prefix: ''
 
 # Plugin language (ru/en)
 # Язык плагина
@@ -39,4 +35,8 @@ paid_faction: true
 # How much money does player need to pay for faction creation?
 # Сколько денег должен платить игрок за создание клана?
 faction_cost: 1000
+
+# Maximal faction name length
+# Макслимальная длина имени клана
+faction_length: 16
 ...

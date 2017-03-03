@@ -53,6 +53,7 @@ class MyFaction extends PluginBase {
 		
 		$this->getCommand("faction")->setExecutor(new Commands\FactionCommand($this));
 		$this->getCommand("factionadmin")->setExecutor(new Commands\FactionAdminCommand($this));
+		$this->getCommand("myfaction")->setExecutor(new Commands\MyFactionCommand($this));
 		
 		if($this->config->get('use_economy')){
 			$this->economy = new EconomyManager($this);
@@ -101,6 +102,7 @@ class MyFaction extends PluginBase {
 			$nickname = $player->getName();
 		}
 		
+		$nickname = strtolower($nickname);
 		unset($this->invites[$nickname]);
 		return;
 	}
@@ -129,5 +131,25 @@ class MyFaction extends PluginBase {
 		return floor(self::BASE_EXP * pow(($level + 1), 2));
 
 		// level + 1 is required to get next level's max xp, otherwise it will return current level max
+	}
+	
+	public function getRankName($level){
+		switch((int) $level){
+			case MyFaction::NORMAL_LEVEL:
+				return $this->language->getMessage('player');
+			break;
+			
+			case MyFaction::CAPITAIN_LEVEL:
+				return $this->language->getMessage('capitain');
+			break;
+			
+			case MyFaction::OFFICER_LEVEL:
+				return $this->language->getMessage('officer');
+			break;
+			
+			case MyFaction::LEADER_LEVEL:
+				return $this->language->getMessage('leader');
+			break;
+		}
 	}
 }

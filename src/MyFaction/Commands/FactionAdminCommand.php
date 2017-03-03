@@ -34,10 +34,10 @@ class FactionAdminCommand implements CommandExecutor {
 			return;
 		}
 			
-		switch(array_shift($args)) {
+		switch(strtolower(array_shift($args))) {
 			
 			case "help":
-			
+				$sender->sendMessage($this->language->getMessage('factionadmin_help'));
 			break;
 			
 			case "delete":
@@ -223,6 +223,9 @@ class FactionAdminCommand implements CommandExecutor {
 				
 				$this->database->changeOwnership($senderName, $targetName, $senderData['factionName']);
 			break;
+			
+			default:
+				$sender->sendMessage($this->language->getMessage('faction_help'));
 		}
 
 	}
@@ -251,13 +254,6 @@ class FactionAdminCommand implements CommandExecutor {
 	
 	private function getPlayer($nickname) {
 		return $this->plugin->getServer()->getPlayer($nickname);
-	}
-	
-	private function notifyPlayer(string $nickname, string $message) {
-		if($this->getPlayer($nickname) instanceof Player) {
-			$player->sendMessage($message);
-		}
-		return;
 	}
 	
 }
