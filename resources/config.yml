@@ -26,17 +26,17 @@ language: 'en'
 
 # Use economy (EconomyAPI)?
 # Использовать экономику?
-use_economy: true
+use_economy: false
 
 # Do players need to pay money for creating faction?
 # Должны ли игроки платить за создание клана?
-paid_faction: true
+paid_faction: false
 
 # How much money does player need to pay for faction creation?
 # Сколько денег должен платить игрок за создание клана?
-faction_cost: 1000
+faction_cost: 500
 
 # Maximal faction name length
 # Макслимальная длина имени клана
-faction_length: 16
+faction_length: 15
 ...

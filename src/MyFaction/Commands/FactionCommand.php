@@ -68,6 +68,11 @@ class FactionCommand implements CommandExecutor {
 					if($this->plugin->config->get('paid_faction')){
 					
 						$economy = $this->plugin->getEconomy();
+						if($economy == null){
+							$sender->sendMessage($this->language->getMessage('economy_error'));
+							return;
+						}
+						
 						(int) $cost = $this->plugin->config->get('faction_cost');
 						(int) $money = $economy->myMoney($senderName);
 						

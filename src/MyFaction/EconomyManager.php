@@ -24,8 +24,8 @@ class EconomyManager {
 			$this->server->getLogger()->info($this->language->getMessage('economy_found'));
 			$this->api = $plugin::getInstance();
 		} else {
-			$this->server->getLogger()->error($this->language->getMessage('economy_not_found'));
-			$this->server->getPluginManager()->disablePlugin($this->plugin);
+			$this->server->getLogger()->error($this->language->getMessage('economy_error_notFound'));
+			$this->api = null;
 		}
 	}
 	

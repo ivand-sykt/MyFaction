@@ -6,9 +6,6 @@ lang_selected: "§bEnglish has been selected"
 noPermission: "§cYou don't have enough permissions!"
 ingame: "§cYou must run this command in-game!"
 
-economy_found: "§aEconomyAPI has been found!"
-economy_not_found: "§cCouldn't find EconomyAPI... Disabling plugin..."
-
 faction_notIn: "§cYou are not in faction!"
 faction_notLeader: "§cYou are not the leader of the faction"
 faction_noName: "§cYou didn't type faction's name!"
@@ -43,8 +40,15 @@ faction_inviteAccepted: "§aYou've successfully accepted invite to faction {fact
 invite_already: "§cThis player is already invited to another faction!"
 invite_declined: "§aYou've successfully declined invitation!"
 
+
 create_wronglen: "§cFaction name is too long, it can be at most {len} characters!"
 create_wrongName: "§cFaction name is wrong!"
+
+
+economy_error: "§cUnable to use economy"
+economy_error_notFound: "§cCouldn't find EconomyAPI..."
+
+economy_found: "§aEconomyAPI has been found!"
 
 leader: "Leader"
 officer: "Officer"
