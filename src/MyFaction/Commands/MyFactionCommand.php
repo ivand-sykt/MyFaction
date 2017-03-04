@@ -38,7 +38,8 @@ class MyFactionCommand implements CommandExecutor {
 						return;
 					}
 					
-					$level = $this->plugin->getFactionLevel($factionData['exp']);
+					$exp = $this->database->getFactionExperience($factionData['factionName']);
+					$level = $this->plugin->getFactionLevel($exp);
 					$data = $this->database->getFactionPlayers($factionData['factionName']);
 					
 					foreach($data as $nickname => $factionLevel){
@@ -49,7 +50,7 @@ class MyFactionCommand implements CommandExecutor {
 					
 					$message = $this->language->getMessage('info_other',
 					['{faction}', '{leader}', '{factionLevel}', '{minexp}', '{maxexp}', '{players}'],
-					[$factionData['factionMask'], $factionData['leader'], $level, $factionData['exp'], $this->plugin->getMaxExp($level), $players]);
+					[$factionData['factionMask'], $factionData['leader'], $level, $exp, $this->plugin->getMaxExp($level), $players]);
 
 					$sender->sendMessage($message);
 				break;

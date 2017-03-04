@@ -39,4 +39,8 @@ faction_cost: 500
 # Maximal faction name length
 # Макслимальная длина имени клана
 faction_length: 15
+
+
+break_block_allowed: [4, 14, 15, 16, 21]
+break_block_exp: 1
 ...

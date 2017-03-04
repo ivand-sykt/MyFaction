@@ -1,6 +1,6 @@
 name: MyFaction
 main: MyFaction\MyFaction
-version: "0.1-dev#2"
+version: "0.1-dev#3"
 api: ["3.0.0-ALPHA1", "3.0.0-ALPHA2", "3.0.0-ALPHA3", "3.0.0-ALPHA4"]
 load: STARTUP
 author: SuperPuperSteve

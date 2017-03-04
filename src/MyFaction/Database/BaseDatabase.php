@@ -24,7 +24,7 @@ interface BaseDatabase {
 	** Otherwise, returns array with data:
 	** $data['nickname'] => string, player's name
 	** $data['factionName'] => string, name of faction
-	** $data['exp'] => int, how much expeirence did player brought to faction
+	** $data['exp'] => int, how much experience did player brought to faction
 	** $data['factionLevel'] => int, faction rank (see at line 11)
 	*/
 	
@@ -38,6 +38,10 @@ interface BaseDatabase {
 	
 	public function getHome(string $faction);
 	
+	public function getFactionExperience(string $faction);
+	
+	public function addPlayerExperience(string $player, int $exp);
+	
 	public function close();
-
+	
 }

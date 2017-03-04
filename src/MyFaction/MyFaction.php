@@ -22,6 +22,7 @@ class MyFaction extends PluginBase {
 	public static $instance;
 	public $invites;
 	public $economy;
+	public $experience;
 	
 	public function onEnable(){
 		@mkdir($this->getDataFolder());
@@ -56,10 +57,12 @@ class MyFaction extends PluginBase {
 		$this->getCommand("myfaction")->setExecutor(new Commands\MyFactionCommand($this));
 		
 		if($this->config->get('use_economy')){
-			$this->economy = new EconomyManager($this);
+			$this->economy = new Managers\EconomyManager($this);
 			$this->economy->economy_init();
 		}
-		
+
+		$this->experience = new Managers\ExperienceManager($this);
+		$this->getServer()->getScheduler()->scheduleRepeatingTask(new Tasks\ExperienceSaveTask($this), 20 * 60);
 		self::$instance = $this;
 	}
 	
@@ -123,6 +126,10 @@ class MyFaction extends PluginBase {
 		return $this->economy->api;
 	}
 	
+	public function getExperienceManager(){
+		return $this->experience;
+	}
+	
 	public function getFactionLevel($exp){
 		return floor(sqrt($exp / self::BASE_EXP));
 	}
@@ -152,4 +159,5 @@ class MyFaction extends PluginBase {
 			break;
 		}
 	}
+	
 }

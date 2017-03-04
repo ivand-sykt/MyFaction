@@ -28,7 +28,6 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 		"CREATE TABLE IF NOT EXISTS `factions` (
 			factionName VARCHAR(255) NOT NULL PRIMARY KEY,
 			factionMask VARCHAR(255) NOT NULL,
-			exp INT NOT NULL,
 			leader VARCHAR(16) NOT NULL
 		);
 		";
@@ -194,6 +193,24 @@ class MySQLDatabase extends Thread implements BaseDatabase {
 	
 		return $data->fetch_assoc();
 	}
+	
+	public function getFactionExperience(string $faction){
+		$faction = strtolower($faction);
+		$data = self::$database->query(
+		"SELECT SUM(exp) FROM `users` 
+		WHERE factionName = '$faction';");
+		
+		return $data->fetch_row()[0];
+	}
+	
+	public function addPlayerExperience(string $player, int $exp){
+		self::$database->query(
+		"UPDATE `users`
+		SET exp = exp + $exp
+		WHERE nickname = '$player'");
+
+		return;
+	}	
 	
 	public function close(){
 		@self::$database->close();

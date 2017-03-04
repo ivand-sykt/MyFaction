@@ -60,7 +60,7 @@ info_self: "§e---- §aInformation about your faction §e----
 \n§aFaction leader: §f{leader}
 \n§aYour faction rank: §f{level}
 \n§aFaction level: §f{factionLevel} ({minexp}/{maxexp})
-\n§aYour faction expirence: {exp}exp
+\n§aYour faction experience: {exp}exp
 \n§aFaction members: §f{players}"
 
 info_other: "§e---- §aInformation about {faction} §e----
@@ -71,7 +71,7 @@ info_other: "§e---- §aInformation about {faction} §e----
 info_player: "§e---- §aInformation about {player} §e----
 \n§aFaction: §f{faction}
 \n§aFaction rank: §f{rank}
-\n§aExpirence given: §f{exp}"
+\n§aExperience given: §f{exp}"
 
 factionadmin_help: " - /factionadmin delete <your faction name> - deletes faction with all it's players (leader)
 \n - /factionadmin changerank <player> <rank (player, capitain, officer)> - changes player's rank (leader)

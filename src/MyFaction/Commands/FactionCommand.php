@@ -115,7 +115,8 @@ class FactionCommand implements CommandExecutor {
 					
 					$factionData = $this->database->getFactionInfo($senderData['factionName']);
 					
-					(int) $level = $this->plugin->getFactionLevel($factionData['exp']);
+					$exp = $this->database->getFactionExperience($factionData['factionName']);
+					(int) $level = $this->plugin->getFactionLevel($exp);
 					$data = $this->database->getFactionPlayers($factionData['factionName']);
 					
 					foreach($data as $nickname => $factionLevel){
@@ -127,7 +128,7 @@ class FactionCommand implements CommandExecutor {
 					
 					$message = $this->language->getMessage('info_self',
 					['{faction}', '{leader}', '{level}', '{factionLevel}', '{minexp}', '{maxexp}', '{exp}', '{players}'],
-					[$senderData['factionMask'], $factionData['leader'], $this->plugin->getRankName($senderData['factionLevel']), $level, $factionData['exp'], $this->plugin->getMaxExp($level), $senderData['exp'], $players]);
+					[$senderData['factionMask'], $factionData['leader'], $this->plugin->getRankName($senderData['factionLevel']), $level, $exp, $this->plugin->getMaxExp($level), $senderData['exp'], $players]);
 					$sender->sendMessage($message);
 				} else {
 					//info about faction in args0				
@@ -140,7 +141,8 @@ class FactionCommand implements CommandExecutor {
 						return;
 					}
 					
-					$level = $this->plugin->getFactionLevel($factionData['exp']);
+					$exp = $this->database->getFactionExperience($factionData['factionName']);
+					$level = $this->plugin->getFactionLevel($exp);
 					$data = $this->database->getFactionPlayers($factionData['factionName']);
 					
 					foreach($data as $nickname => $factionLevel){
@@ -151,7 +153,7 @@ class FactionCommand implements CommandExecutor {
 					
 					$message = $this->language->getMessage('info_other',
 					['{faction}', '{leader}', '{factionLevel}', '{minexp}', '{maxexp}', '{players}'],
-					[$factionData['factionMask'], $factionData['leader'], $level, $factionData['exp'], $this->plugin->getMaxExp($level), $players]);
+					[$factionData['factionMask'], $factionData['leader'], $level, $exp, $this->plugin->getMaxExp($level), $players]);
 				}
 					
 			break;
