@@ -1,7 +1,7 @@
 # MyFaction
 MyFaction is simple factions plugin.
 
-## Last update: v0.1-dev#1 (March 3rd, 2017)
+## Last update: v0.1-dev#4 (March 5th, 2017)
 * First release
 
 ## Permissions:

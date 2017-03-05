@@ -1,6 +1,6 @@
 <?php
 
-namespace MyFaction;
+namespace MyFaction\Managers;
 
 use MyFaction\MyFaction;
 
