@@ -5,9 +5,7 @@ namespace MyFaction\Database;
 use MyFaction\Database\BaseDatabase;
 use MyFaction\MyFaction;
 
-use pocketmine\Thread;
-
-class SQLiteDatabase extends Thread implements BaseDatabase {
+class SQLiteDatabase implements BaseDatabase {
 
 	public static $database;
 	
@@ -51,8 +49,6 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 		self::$database->query($factionInit);
 		self::$database->query($usersInit);
 		self::$database->query($homesInit);
-
-		$this->start();
 	}
 	
 	public function registerFaction(string $faction, string $owner) {
@@ -211,14 +207,6 @@ class SQLiteDatabase extends Thread implements BaseDatabase {
 	
 	public function close(){
 		self::$database->close();
-	}
-	
-	public function run() {
-		// do nothing
-	}
-	
-	public function getThreadName(){
-		return "MyFaction requests";
 	}
 	
 }

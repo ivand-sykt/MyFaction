@@ -9,6 +9,8 @@ use pocketmine\event\EventPriority;
 
 use pocketmine\event\block\BlockBreakEvent;
 
+use pocketmine\event\player\PlayerDeathEvent;
+
 class EventListener implements Listener {
 	
 	public function __construct(MyFaction $plugin){
@@ -32,4 +34,8 @@ class EventListener implements Listener {
 		}
 	}
 	
+	/**
+	 * @priority HIGHEST 
+	 */
+	 
 }
