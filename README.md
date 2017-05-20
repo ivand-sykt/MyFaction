@@ -5,7 +5,7 @@ MyFaction is simple factions plugin.
 * First release
 
 ## Permissions:
-- This plugin does not have permissions
+- This plugin does not have any permissions
 
 ## Commands: 
 - `/faction` - player commands (alias `f`)
@@ -13,7 +13,7 @@ MyFaction is simple factions plugin.
  - `/faction create <faction name>` - creates a faction
  - `/faction info [faction name]` - gives information about faction `faction name`, if it's null, gives information about player's faction
  - `/faction home` - teleports player to faction's home
- - `/faction leave` - leave player's faction (Faction leaders cannot leave, howewer. They must change faction ownership of delete faction)
+ - `/faction leave` - leave player's faction (Faction leaders cannot leave, howewer. They must change faction ownership or delete faction)
  - `/faction accept` - accept invitation to faction
  
 - `/factionadmin` - commands for officers and leaders (alias `fadmin`)
